@@ -58,7 +58,8 @@ export function addComment(req, res) {
     res.status(403).end();
   }
   const newComment = {
-    ...req.body.comment,
+    author: sanitizeHtml(req.body.comment.author),
+    content: sanitizeHtml(req.body.comment.content),
     cuid: cuid(),
   };
 
@@ -89,8 +90,8 @@ export function updateComment(req, res) {
   Post.findOneAndUpdate(
     { cuid: req.body.postId, 'comments.cuid': req.body.comment.cuid },
     { $set: {
-      'comments.$.content': req.body.comment.content,
-      'comments.$.author': req.body.comment.author,
+      'comments.$.content': sanitizeHtml(req.body.comment.content),
+      'comments.$.author': sanitizeHtml(req.body.comment.author),
       'comments.$.dateUpdated': Date.now() } },
     { new: true }, (err, saved) => {
       if (err) {
