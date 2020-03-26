@@ -33,6 +33,7 @@
   text-decoration: none;
   font-size: 14px;
   font-style: italic;
+  padding-right: 10px;
 }
 
 .post-action a:hover{

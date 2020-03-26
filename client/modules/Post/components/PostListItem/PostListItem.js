@@ -16,7 +16,12 @@ function PostListItem(props) {
       </h3>
       <p className={styles['author-name']}><FormattedMessage id="by" /> {props.post.name}</p>
       <p className={styles['post-desc']}>{props.post.content}</p>
-      <p className={styles['post-action']}><a href="#" onClick={props.onDelete}><FormattedMessage id="deletePost" /></a></p>
+      <p className={styles['post-action']}>
+        <Link to={`/posts/${props.post.slug}-${props.post.cuid}`} >
+          {props.post.comments ? props.post.comments.length : 0} <FormattedMessage id="comments" />
+        </Link>
+        <a href="#" onClick={props.onDelete}><FormattedMessage id="deletePost" /></a>
+      </p>
       <hr className={styles.divider} />
     </div>
   );
@@ -29,6 +34,7 @@ PostListItem.propTypes = {
     content: PropTypes.string.isRequired,
     slug: PropTypes.string.isRequired,
     cuid: PropTypes.string.isRequired,
+    comments: PropTypes.array,
   }).isRequired,
   onDelete: PropTypes.func.isRequired,
 };
