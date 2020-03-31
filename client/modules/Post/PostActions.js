@@ -57,6 +57,7 @@ export function updateComment(post, comment) {
     type: UPDATE_COMMENT,
     postId: post.cuid,
     commentId: comment.cuid,
+    author: comment.author,
     content: comment.content,
   };
 }

@@ -31,6 +31,7 @@ const PostReducer = (state = initialState, action) => {
             comment.cuid === action.commentId
               ? {
                 ...comment,
+                author: action.author,
                 content: action.content,
               }
               : comment
