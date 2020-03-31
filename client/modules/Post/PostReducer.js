@@ -1,4 +1,4 @@
-import { ADD_POST, ADD_POSTS, DELETE_POST } from './PostActions';
+import { ADD_POST, ADD_POSTS, ADD_COMMENT, DELETE_POST, UPDATE_COMMENT, DELETE_COMMENT } from './PostActions';
 
 // Initial State
 const initialState = { data: [] };
@@ -13,6 +13,38 @@ const PostReducer = (state = initialState, action) => {
     case ADD_POSTS :
       return {
         data: action.posts,
+      };
+
+    case ADD_COMMENT :
+      return {
+        data: state.data.map(post => (post.cuid === action.postId ? {
+          ...post,
+          comments: [...post.comments, action.comment],
+        } : post)),
+      };
+
+    case UPDATE_COMMENT :
+      return {
+        data: state.data.map(post => (post.cuid === action.postId ? {
+          ...post,
+          comments: post.comments.map(comment => (
+            comment.cuid === action.commentId
+              ? {
+                ...comment,
+                author: action.author,
+                content: action.content,
+              }
+              : comment
+          )),
+        } : post)),
+      };
+
+    case DELETE_COMMENT :
+      return {
+        data: state.data.map(post => (post.cuid === action.postId ? {
+          ...post,
+          comments: post.comments.filter(comment => comment.cuid !== action.commentId),
+        } : post)),
       };
 
     case DELETE_POST :

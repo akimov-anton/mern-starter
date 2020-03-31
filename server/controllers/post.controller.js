@@ -47,6 +47,62 @@ export function addPost(req, res) {
 }
 
 /**
+ * Save a comment
+ * @param req
+ * @param res
+ * @returns void
+ */
+
+export function addComment(req, res) {
+  if (!req.body.postId || !req.body.comment.content || !req.body.comment.author) {
+    res.status(403).end();
+  }
+  const newComment = {
+    author: sanitizeHtml(req.body.comment.author),
+    content: sanitizeHtml(req.body.comment.content),
+    cuid: cuid(),
+  };
+
+  Post.findOneAndUpdate(
+    { cuid: req.body.postId },
+    { $push: { comments: newComment } },
+    { new: true }, (err, saved) => {
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        res.json({ post: saved, comment: saved.comments[saved.comments.length - 1] });
+      }
+    });
+}
+
+/**
+ * Update a comment
+ * @param req
+ * @param res
+ * @returns void
+ */
+
+export function updateComment(req, res) {
+  if (!req.body.postId || !req.body.comment.content) {
+    res.status(403).end();
+  }
+
+  Post.findOneAndUpdate(
+    { cuid: req.body.postId, 'comments.cuid': req.body.comment.cuid },
+    { $set: {
+      'comments.$.content': sanitizeHtml(req.body.comment.content),
+      'comments.$.author': sanitizeHtml(req.body.comment.author),
+      'comments.$.dateUpdated': Date.now() } },
+    { new: true }, (err, saved) => {
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        res.json({ post: saved });
+      }
+    });
+}
+
+/**
  * Get a single post
  * @param req
  * @param res
@@ -77,4 +133,24 @@ export function deletePost(req, res) {
       res.status(200).end();
     });
   });
+}
+
+/**
+ * Delete a comment
+ * @param req
+ * @param res
+ * @returns void
+ */
+
+export function deleteComment(req, res) {
+  Post.findOneAndUpdate(
+    { cuid: req.body.postId, 'comments.cuid': req.body.commentId },
+    { $pull: { comments: { cuid: req.body.commentId } } },
+    { new: true }, (err, saved) => {
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        res.json({ post: saved });
+      }
+    });
 }

@@ -8,10 +8,13 @@ export default {
     by: 'By',
     deletePost: 'Delete Post',
     createNewPost: 'Create new post',
+    createNewComment: 'Write a comment',
     authorName: 'Author\'s Name',
     postTitle: 'Post Title',
     postContent: 'Post Content',
+    commentContent: 'Text',
     submit: 'Submit',
+    comments: 'comments',
     comment: `user {name} {value, plural,
     	  =0 {does not have any comments}
     	  =1 {has # comment}

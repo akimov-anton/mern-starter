@@ -8,10 +8,13 @@ export default {
     by: 'Par',
     deletePost: 'Supprimer le message',
     createNewPost: 'Créer un nouveau message',
+    createNewComment: 'Rédiger un commentaire',
     authorName: 'Nom de l\'auteur',
     postTitle: 'Titre de l\'article',
     postContent: 'Contenu après',
+    commentContent: 'Texte',
     submit: 'Soumettre',
+    comments: 'commentaires',
     comment: `user {name} {value, plural,
     	  =0 {does not have any comments}
     	  =1 {has # comment}
